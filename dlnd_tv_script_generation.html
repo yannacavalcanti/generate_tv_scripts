@@ -13988,7 +13988,7 @@ out = output[:, -1]</code></pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Data params</span>
@@ -14010,7 +14010,7 @@ out = output[:, -1]</code></pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Training parameters</span>
@@ -14566,6 +14566,452 @@ Epoch:    8/8     Loss: 3.572882435798645
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p>I have run 8 epochs in a first moment do test the model and get a good loss. To really get to a loss lower than 3.5, I will load the previously trained model and run for more 8 epochs (to avoid consumption of too much GPU hours).</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">DON&#39;T MODIFY ANYTHING IN THIS CELL</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">workspace_utils</span> <span class="k">import</span> <span class="n">active_session</span>
+
+<span class="c1"># create model and move to gpu if available</span>
+<span class="n">rnn</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">load_model</span><span class="p">(</span><span class="s1">&#39;./save/trained_rnn&#39;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">train_on_gpu</span><span class="p">:</span>
+    <span class="n">rnn</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+
+<span class="c1"># defining loss and optimization functions for training</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">rnn</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">learning_rate</span><span class="p">)</span>
+<span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span> <span class="c1">#BCEWithLogitsLoss()</span>
+
+<span class="k">with</span> <span class="n">active_session</span><span class="p">():</span>
+    <span class="c1"># training the model</span>
+    
+    <span class="n">trained_rnn</span> <span class="o">=</span> <span class="n">train_rnn</span><span class="p">(</span><span class="n">rnn</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">num_epochs</span><span class="p">,</span> <span class="n">show_every_n_batches</span><span class="p">)</span>
+
+    <span class="c1"># saving the trained model</span>
+    <span class="n">helper</span><span class="o">.</span><span class="n">save_model</span><span class="p">(</span><span class="s1">&#39;./save/trained_rnn&#39;</span><span class="p">,</span> <span class="n">trained_rnn</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Model Trained and Saved&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Training for 8 epoch(s)...
+Epoch:    1/8     Loss: 3.50340549993515
+
+Epoch:    1/8     Loss: 3.5839652597904204
+
+Epoch:    1/8     Loss: 3.64160556602478
+
+Epoch:    1/8     Loss: 3.634497108697891
+
+Epoch:    1/8     Loss: 3.6469482893943788
+
+Epoch:    1/8     Loss: 3.571154350757599
+
+Epoch:    1/8     Loss: 3.521233666419983
+
+Epoch:    1/8     Loss: 3.5875150561332703
+
+Epoch:    1/8     Loss: 3.688508586883545
+
+Epoch:    1/8     Loss: 3.606364511013031
+
+Epoch:    1/8     Loss: 3.703983328819275
+
+Epoch:    1/8     Loss: 3.7322878551483156
+
+Epoch:    1/8     Loss: 3.7358228044509887
+
+Epoch:    1/8     Loss: 3.6879809985160827
+
+Epoch:    1/8     Loss: 3.7231258854866027
+
+Epoch:    1/8     Loss: 3.642231421470642
+
+Epoch:    1/8     Loss: 3.606672698736191
+
+Epoch:    1/8     Loss: 3.6890270295143126
+
+Epoch:    1/8     Loss: 3.695525794506073
+
+Epoch:    1/8     Loss: 3.584748239040375
+
+Epoch:    1/8     Loss: 3.7543134264945985
+
+Epoch:    1/8     Loss: 3.812246556758881
+
+Epoch:    1/8     Loss: 3.847832200050354
+
+Epoch:    1/8     Loss: 3.843007652282715
+
+Epoch:    1/8     Loss: 3.8139265179634094
+
+Epoch:    1/8     Loss: 3.843045566558838
+
+Epoch:    1/8     Loss: 3.7797836847305297
+
+Epoch:    2/8     Loss: 3.6362186253896027
+
+Epoch:    2/8     Loss: 3.4929779028892516
+
+Epoch:    2/8     Loss: 3.5475483388900755
+
+Epoch:    2/8     Loss: 3.518864706039429
+
+Epoch:    2/8     Loss: 3.4944217915534974
+
+Epoch:    2/8     Loss: 3.443654465675354
+
+Epoch:    2/8     Loss: 3.4019587860107423
+
+Epoch:    2/8     Loss: 3.453125886440277
+
+Epoch:    2/8     Loss: 3.517272285461426
+
+Epoch:    2/8     Loss: 3.442132839679718
+
+Epoch:    2/8     Loss: 3.5752420015335082
+
+Epoch:    2/8     Loss: 3.5868568835258485
+
+Epoch:    2/8     Loss: 3.5805866203308105
+
+Epoch:    2/8     Loss: 3.5239759650230407
+
+Epoch:    2/8     Loss: 3.5246967587471008
+
+Epoch:    2/8     Loss: 3.488867259025574
+
+Epoch:    2/8     Loss: 3.4443387143611908
+
+Epoch:    2/8     Loss: 3.516441925048828
+
+Epoch:    2/8     Loss: 3.5187189412117004
+
+Epoch:    2/8     Loss: 3.4196179857254028
+
+Epoch:    2/8     Loss: 3.6055499181747437
+
+Epoch:    2/8     Loss: 3.614991983413696
+
+Epoch:    2/8     Loss: 3.655441770076752
+
+Epoch:    2/8     Loss: 3.639563690185547
+
+Epoch:    2/8     Loss: 3.633523187160492
+
+Epoch:    2/8     Loss: 3.647647568702698
+
+Epoch:    2/8     Loss: 3.630538621902466
+
+Epoch:    3/8     Loss: 3.5358043523134386
+
+Epoch:    3/8     Loss: 3.459654386520386
+
+Epoch:    3/8     Loss: 3.496370728969574
+
+Epoch:    3/8     Loss: 3.4664656636714937
+
+Epoch:    3/8     Loss: 3.444750883102417
+
+Epoch:    3/8     Loss: 3.4014560866355894
+
+Epoch:    3/8     Loss: 3.3554789056777956
+
+Epoch:    3/8     Loss: 3.4008241810798645
+
+Epoch:    3/8     Loss: 3.459184096813202
+
+Epoch:    3/8     Loss: 3.3905546488761904
+
+Epoch:    3/8     Loss: 3.509303689479828
+
+Epoch:    3/8     Loss: 3.546696265220642
+
+Epoch:    3/8     Loss: 3.5252318696975706
+
+Epoch:    3/8     Loss: 3.467815110683441
+
+Epoch:    3/8     Loss: 3.4587146472930907
+
+Epoch:    3/8     Loss: 3.439023797035217
+
+Epoch:    3/8     Loss: 3.3835098538398745
+
+Epoch:    3/8     Loss: 3.4497603969573976
+
+Epoch:    3/8     Loss: 3.4630312628746034
+
+Epoch:    3/8     Loss: 3.3659881353378296
+
+Epoch:    3/8     Loss: 3.546797472000122
+
+Epoch:    3/8     Loss: 3.5390819478034974
+
+Epoch:    3/8     Loss: 3.5856581611633302
+
+Epoch:    3/8     Loss: 3.5613978633880614
+
+Epoch:    3/8     Loss: 3.5745405378341677
+
+Epoch:    3/8     Loss: 3.582633999347687
+
+Epoch:    3/8     Loss: 3.574721065044403
+
+Epoch:    4/8     Loss: 3.4930412361797054
+
+Epoch:    4/8     Loss: 3.4383507912158966
+
+Epoch:    4/8     Loss: 3.4750663447380066
+
+Epoch:    4/8     Loss: 3.4279088110923768
+
+Epoch:    4/8     Loss: 3.4120500569343566
+
+Epoch:    4/8     Loss: 3.365731671333313
+
+Epoch:    4/8     Loss: 3.325076440811157
+
+Epoch:    4/8     Loss: 3.3737874269485473
+
+Epoch:    4/8     Loss: 3.413420446872711
+
+Epoch:    4/8     Loss: 3.356460406303406
+
+Epoch:    4/8     Loss: 3.476143575191498
+
+Epoch:    4/8     Loss: 3.4809243683815003
+
+Epoch:    4/8     Loss: 3.4873239183425904
+
+Epoch:    4/8     Loss: 3.4353858485221864
+
+Epoch:    4/8     Loss: 3.4214929041862487
+
+Epoch:    4/8     Loss: 3.4059424700737
+
+Epoch:    4/8     Loss: 3.3575868017673494
+
+Epoch:    4/8     Loss: 3.4123319792747497
+
+Epoch:    4/8     Loss: 3.426129928588867
+
+Epoch:    4/8     Loss: 3.3270279145240784
+
+Epoch:    4/8     Loss: 3.513082679748535
+
+Epoch:    4/8     Loss: 3.5107605152130126
+
+Epoch:    4/8     Loss: 3.549318103313446
+
+Epoch:    4/8     Loss: 3.50804416513443
+
+Epoch:    4/8     Loss: 3.5410182065963745
+
+Epoch:    4/8     Loss: 3.5575066595077516
+
+Epoch:    4/8     Loss: 3.5449552526473997
+
+Epoch:    5/8     Loss: 3.4625354021375045
+
+Epoch:    5/8     Loss: 3.412157555818558
+
+Epoch:    5/8     Loss: 3.4600053877830503
+
+Epoch:    5/8     Loss: 3.407093395471573
+
+Epoch:    5/8     Loss: 3.386255356311798
+
+Epoch:    5/8     Loss: 3.3431746611595154
+
+Epoch:    5/8     Loss: 3.2984419312477113
+
+Epoch:    5/8     Loss: 3.3523793683052063
+
+Epoch:    5/8     Loss: 3.381413655281067
+
+Epoch:    5/8     Loss: 3.3323238096237184
+
+Epoch:    5/8     Loss: 3.454755672454834
+
+Epoch:    5/8     Loss: 3.4715120272636413
+
+Epoch:    5/8     Loss: 3.463587876319885
+
+Epoch:    5/8     Loss: 3.409805655002594
+
+Epoch:    5/8     Loss: 3.4038281259536745
+
+Epoch:    5/8     Loss: 3.3793384675979614
+
+Epoch:    5/8     Loss: 3.3275588586330413
+
+Epoch:    5/8     Loss: 3.3976362566947937
+
+Epoch:    5/8     Loss: 3.3962938952445985
+
+Epoch:    5/8     Loss: 3.321042028427124
+
+Epoch:    5/8     Loss: 3.4797325806617736
+
+Epoch:    5/8     Loss: 3.475376868724823
+
+Epoch:    5/8     Loss: 3.51357711315155
+
+Epoch:    5/8     Loss: 3.487545123100281
+
+Epoch:    5/8     Loss: 3.511568637371063
+
+Epoch:    6/8     Loss: 3.3641486954689026
+
+Epoch:    6/8     Loss: 3.323736870765686
+
+Epoch:    6/8     Loss: 3.280900884628296
+
+Epoch:    6/8     Loss: 3.33946261882782
+
+Epoch:    6/8     Loss: 3.3576732144355774
+
+Epoch:    6/8     Loss: 3.3052138047218325
+
+Epoch:    6/8     Loss: 3.435610147476196
+
+Epoch:    6/8     Loss: 3.4400334677696227
+
+Epoch:    6/8     Loss: 3.4462637033462524
+
+Epoch:    6/8     Loss: 3.3870604634284973
+
+Epoch:    6/8     Loss: 3.367770746707916
+
+Epoch:    6/8     Loss: 3.3550553617477417
+
+Epoch:    6/8     Loss: 3.306994812965393
+
+Epoch:    6/8     Loss: 3.372380000114441
+
+Epoch:    6/8     Loss: 3.3847852482795715
+
+Epoch:    6/8     Loss: 3.2892984490394594
+
+Epoch:    6/8     Loss: 3.466539402484894
+
+Epoch:    6/8     Loss: 3.454629843711853
+
+Epoch:    6/8     Loss: 3.4989818587303163
+
+Epoch:    6/8     Loss: 3.454283564567566
+
+Epoch:    6/8     Loss: 3.487908654212952
+
+Epoch:    6/8     Loss: 3.4949564189910887
+
+Epoch:    6/8     Loss: 3.5123853235244753
+
+Epoch:    7/8     Loss: 3.4180785993925427
+
+Epoch:    7/8     Loss: 3.3876766521930692
+
+Epoch:    7/8     Loss: 3.4376287655830384
+
+Epoch:    7/8     Loss: 3.375587018251419
+
+Epoch:    7/8     Loss: 3.345026366710663
+
+Epoch:    7/8     Loss: 3.3070315990448
+
+Epoch:    7/8     Loss: 3.2678702135086057
+
+Epoch:    7/8     Loss: 3.314447298049927
+
+Epoch:    7/8     Loss: 3.3381941390037535
+
+Epoch:    7/8     Loss: 3.283334328174591
+
+Epoch:    7/8     Loss: 3.416126825809479
+
+Epoch:    7/8     Loss: 3.4185627393722533
+
+Epoch:    7/8     Loss: 3.425841203689575
+
+Epoch:    7/8     Loss: 3.364684600353241
+
+Epoch:    7/8     Loss: 3.354152389526367
+
+Epoch:    7/8     Loss: 3.334162242889404
+
+Epoch:    7/8     Loss: 3.2929083933830263
+
+Epoch:    7/8     Loss: 3.3524517529010773
+
+Epoch:    7/8     Loss: 3.3640983967781066
+
+Epoch:    7/8     Loss: 3.2633105330467225
+
+Epoch:    7/8     Loss: 3.4426138372421264
+
+Epoch:    7/8     Loss: 3.4394150710105897
+
+Epoch:    7/8     Loss: 3.4734393420219423
+
+Epoch:    7/8     Loss: 3.423694632053375
+
+Epoch:    7/8     Loss: 3.460533106803894
+
+Epoch:    7/8     Loss: 3.473624674320221
+
+Epoch:    7/8     Loss: 3.480223060131073
+
+Epoch:    8/8     Loss: 3.4057236532814588
+
+Epoch:    8/8     Loss: 3.365115728855133
+
+Epoch:    8/8     Loss: 3.424213029384613
+
+Epoch:    8/8     Loss: 3.36612393784523
+
+Epoch:    8/8     Loss: 3.3307595558166505
+
+Epoch:    8/8     Loss: 3.2837107014656066
+
+Epoch:    8/8     Loss: 3.2561924357414247
+
+Epoch:    8/8     Loss: 3.307215850353241
+
+Epoch:    8/8     Loss: 3.305460177898407
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Question:-How-did-you-decide-on-your-model-hyperparameters?">Question: How did you decide on your model hyperparameters?<a class="anchor-link" href="#Question:-How-did-you-decide-on-your-model-hyperparameters?">&#182;</a></h3><p>For example, did you try different sequence_lengths and find that one size made the model converge faster? What about your hidden_dim and n_layers; how did you decide on those?</p>
 
 </div>
@@ -14574,7 +15020,7 @@ Epoch:    8/8     Loss: 3.572882435798645
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Answer:</strong> I chose a hidden dim such that my model would converge but at the same time wouldn't take too long or take a lot of memory. For embedding, I tried to balance a dimension big enough to represent words but small enough to not consume too much memory.</p>
+<p><strong>Answer:</strong> I have tried several parameters, starting from smaller batch sizes (32) that didn't quite reach convergence soon and bigger ones that exploded my memory (256). I have also tried several hidden dims (100, 200, 300) and ended up chosing a hidden dim such that my model would converge but at the same time wouldn't take too long or take a lot of memory (large hidden dim gave me a lot of training issues). For embedding, I tried several values (from even 20 to 300) to balance a dimension big enough to represent words but small enough to not consume too much memory.</p>
 
 </div>
 </div>
@@ -14590,7 +15036,7 @@ Epoch:    8/8     Loss: 3.572882435798645
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
@@ -14620,7 +15066,7 @@ Epoch:    8/8     Loss: 3.572882435798645
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
@@ -14716,7 +15162,7 @@ Epoch:    8/8     Loss: 3.572882435798645
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
@@ -14758,81 +15204,75 @@ Epoch:    8/8     Loss: 3.572882435798645
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>jerry: strength!(laughs)
+<pre>jerry:
 
-morty:(sarcastic) well, i&#39;m sorry, i&#39;m not gonna be able to go to the movies?
+george: oh, i can&#39;t believe this. i can&#39;t get it off.
 
-george: i don&#39;t think so.
+elaine: what are you doing here?
 
-kramer:(whispering) i can&#39;t.
+kramer: yeah, i&#39;m sorry.
 
-jerry: oh, god, that&#39;s right.
+elaine: oh.
 
-elaine:(whispering) yeah.
+morty: i can&#39;t believe this.
 
-george: alright!
+elaine: so, what&#39;s happening?
 
-elaine:(sarcastic) oh, come on!
+jerry: i don&#39;t know if i could get that checked off for him.
 
-jerry: so, what did you do?
+jerry: oh, no.
 
-jerry: no.
+george: so, what are you doing here?
 
-jerry: oh!
+kramer: no, no, no. it&#39;s just a long story. i was wondering if i could have been in the bathroom.
 
-george: what about the score?
+jerry: oh, hi.
 
-jerry:(jokingly exchange a note) i can&#39;t.
+puddy: hey!
 
-jerry: i don&#39;t care about this.
+george: so you got a flight for the last day, and the whole thing has been so difficult.
 
-george: what?!
+elaine: oh, hi, jerry.
 
-jerry: i thought that was a big color?
-
-kramer:(sarcastic) yeah?
-
-kramer: yeah.
-
-elaine:(shocked) yeah.
-
-elaine:(shocked to the phone) hello!
-
-morty: alright... vandelay!
-
-kramer: alright, well, i can&#39;t believe you were gonna be able to buy a little scheme. it&#39;s not a little boiled maker.
-
-newman: oh, yeah.
-
-newman:(sarcastic) well, i was in the middle of the building.
-
-jerry: so, what did i do?
-
-george: i told them i could get rid of it.
-
-newman: oh, hi everybody.
-
-jerry: alright, that&#39;s it!
-
-george: what?
-
-george: i don&#39;t care.
-
-elaine: what?
-
-jerry: i can&#39;t believe this was a little bit. i think it&#39;s a little scheme.
-
-newman: well, i was just wondering that it&#39;s like that kind.
-
-jerry: oh, god, that&#39;s a shame, and i could just get it in the air, and he wants to buy that car, or the library is that?!
-
-kramer: well, you know, i&#39;m going to be honest with you, huh?!
-
-elaine: yeah!
+elaine: i don&#39;t know, i was just going to get it.
 
 jerry: what?
 
-george: i don&#39;t know, i
+george: no. i&#39;m sorry. i got a little bit.
+
+george: oh, yeah, yeah.
+
+elaine: oh, hi, i&#39;m sorry.
+
+george: i can&#39;t believe that.
+
+jerry: so you&#39;re gettin&#39; a nap? you know, the only thing is, you know, i don&#39;t know what it means about. i got to see that guy.
+
+elaine: what was the difference?
+
+jerry: i don&#39;t know if you can tell me. i got the one who could get started to a party.
+
+george: you got to go.
+
+morty: what?
+
+jerry:(gesturing to the phone) oh, hi.
+
+puddy: hi.
+
+puddy: hey, georgie- what do they have to say about the same.
+
+jerry: you know, i can&#39;t afford to talk to you about it.
+
+jerry:(gesturing to george) hey, you gotta be a little while.
+
+elaine: oh, yeah.
+
+helen: so, what was it?
+
+elaine: no. no. no. i didn&#39;t have a job.
+
+
 </pre>
 </div>
 </div>
@@ -14851,7 +15291,7 @@ george: i don&#39;t know, i
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># save script to a text file</span>
